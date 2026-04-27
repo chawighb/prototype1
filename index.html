@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GHB HaaS – Feature Showcase</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Kanit',sans-serif;background:#0D0D14;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;overflow:hidden;color:#fff}
+.shell{width:100%;max-width:430px;display:flex;flex-direction:column;align-items:center;padding:16px 14px 14px;position:relative}
+.top-bar{width:100%;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.ghb-badge{font-size:13px;font-weight:900;color:#fff;display:flex;align-items:center;gap:6px}
+.ghb-badge .dot{width:8px;height:8px;border-radius:50%;background:#FF6B00;animation:blink 1.2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.step-lbl{font-size:11px;font-weight:700;color:rgba(255,255,255,.35)}
+.caption{width:100%;text-align:center;margin-bottom:12px;min-height:66px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cap-tag{font-size:10px;font-weight:700;color:#FF6B00;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;opacity:0;animation:fadeUp .4s .05s ease both}
+.cap-title{font-size:clamp(15px,4vw,19px);font-weight:900;line-height:1.25;opacity:0;animation:fadeUp .4s .15s ease both}
+.cap-sub{font-size:12px;color:rgba(255,255,255,.45);font-weight:500;margin-top:4px;line-height:1.5;max-width:300px;opacity:0;animation:fadeUp .4s .25s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.phone-wrap{position:relative;width:100%;max-width:252px;filter:drop-shadow(0 20px 40px rgba(0,0,0,.7))}
+.phone-frame{background:#18181C;border-radius:38px;border:2px solid rgba(255,255,255,.1);overflow:hidden;position:relative;aspect-ratio:9/16.5;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:85px;height:24px;background:#18181C;border-radius:0 0 15px 15px;z-index:30}
+.phone-screen{position:absolute;inset:0;background:#F5F5F7;display:flex;flex-direction:column;overflow:hidden}
+.hand{position:absolute;z-index:50;pointer-events:none;font-size:26px;line-height:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,.4));transition:left .6s cubic-bezier(.34,1.2,.64,1),top .6s cubic-bezier(.34,1.2,.64,1),transform .15s;display:none}
+.hand.tap{transform:scale(.7) rotate(-15deg)!important;transition:transform .08s}
+.ring{position:absolute;pointer-events:none;z-index:25;border-radius:inherit;box-shadow:0 0 0 3px rgba(255,107,0,.9),0 0 0 7px rgba(255,107,0,.25),0 0 20px rgba(255,107,0,.3);animation:rp 1.5s ease-in-out infinite;transition:all .5s cubic-bezier(.34,1.4,.64,1);opacity:0}
+@keyframes rp{0%,100%{box-shadow:0 0 0 3px rgba(255,107,0,.9),0 0 0 7px rgba(255,107,0,.25),0 0 20px rgba(255,107,0,.3)}50%{box-shadow:0 0 0 3px #FF6B00,0 0 0 12px rgba(255,107,0,.35),0 0 30px rgba(255,107,0,.4)}}
+.tip{position:absolute;background:linear-gradient(135deg,#FF8C32,#FF6B00);border-radius:11px;padding:7px 11px;font-size:10px;font-weight:700;color:#fff;z-index:40;box-shadow:0 6px 18px rgba(255,107,0,.45);max-width:155px;line-height:1.4;text-align:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.tip.show{opacity:1}
+.tip::after{content:'';position:absolute;width:8px;height:8px;background:#FF8C32;bottom:-4px;left:50%;transform:translateX(-50%) rotate(45deg)}
+/* MINI UI */
+.mh{background:#fff;padding:9px 13px 8px;display:flex;align-items:center;justify-content:space-between;border-bottom:.5px solid #E8E8ED;flex-shrink:0;padding-top:28px}
+.mav{width:27px;height:27px;border-radius:50%;background:linear-gradient(135deg,#FF8C32,#FF6B00);display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:800;flex-shrink:0}
+.mun{font-size:9px;font-weight:700;color:#1C1C1E}
+.mtier{font-size:6px;color:#FF6B00;font-weight:700;background:#FFF3E8;padding:1px 5px;border-radius:10px;display:inline-block;margin-top:1px}
+.mlogo{font-size:11px;font-weight:900;color:#1C1C1E}
+.mlogo span{color:#FF6B00}
+.mbellw{position:relative;width:23px;height:23px;background:#F5F5F7;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mbadge{position:absolute;top:-3px;right:-3px;width:10px;height:10px;background:#FF3B30;border-radius:50%;font-size:6px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
+.mc{flex:1;overflow:hidden;background:#F5F5F7;position:relative}
+.mc.scroll{overflow-y:auto}
+.mhero{margin:8px;background:linear-gradient(135deg,#FF8C32,#FF6B00);border-radius:13px;padding:11px;color:#fff}
+.mscore{font-size:32px;font-weight:900;line-height:1}
+.mpills{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.mpill{background:rgba(255,255,255,.2);border-radius:12px;padding:2px 7px;font-size:7px;font-weight:700}
+.mpill.w{background:rgba(255,255,255,.35)}
+.mci{margin:0 8px 5px;background:#fff;border-radius:9px;padding:8px;display:flex;align-items:center;gap:7px;border:.5px solid #E8E8ED}
+.mcic{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mbd{font-size:6px;font-weight:700;padding:2px 5px;border-radius:8px;white-space:nowrap}
+.mni-item{margin:0 8px 5px;background:#FFFCF9;border-radius:9px;padding:8px;display:flex;gap:7px;border:.5px solid rgba(255,107,0,.2);position:relative}
+.mni-item::after{content:'';position:absolute;top:8px;right:8px;width:5px;height:5px;border-radius:50%;background:#FF6B00}
+.mnicon{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.msg{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:0 8px 5px}
+.msc{background:#fff;border-radius:9px;padding:8px 5px;text-align:center;border:.5px solid #E8E8ED}
+.msi{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin:0 auto 4px}
+.mlcard{margin:0 8px 5px;background:#fff;border-radius:9px;padding:10px;border:.5px solid #E8E8ED}
+.mlcard.hi{background:#FFF8F0;border-color:rgba(255,107,0,.2)}
+.mjstats{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:0 8px 5px}
+.mjstat{background:#fff;border-radius:7px;padding:6px;text-align:center;border:.5px solid #E8E8ED}
+.mtrack{margin:0 8px 5px;background:#FFF3E8;border-radius:9px;padding:8px;border:.5px solid rgba(255,107,0,.2)}
+.mbnav{background:#fff;border-top:.5px solid #E8E8ED;display:flex;padding:6px 0;flex-shrink:0}
+.mni{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px}
+.mnl{font-size:7px;font-weight:700}
+.mni.a .mnl{color:#FF6B00}
+.mni svg{width:15px;height:15px}
+.mni.a svg{stroke:#FF6B00}
+.mni:not(.a) svg{stroke:#8E8E93}
+.mni:not(.a) .mnl{color:#8E8E93}
+.mkbrow{display:flex;gap:6px;overflow-x:visible;padding:0 8px 8px}
+.mkbc{flex-shrink:0;width:105px;background:#fff;border-radius:9px;overflow:hidden;border:.5px solid #E8E8ED}
+.mkbimg{height:54px;display:flex;align-items:flex-end;padding:5px}
+.mkbbody{padding:5px 7px 7px}
+.mhist{margin:0 8px 4px;background:#fff;border-radius:8px;padding:7px;display:flex;align-items:center;gap:6px;border:.5px solid #E8E8ED}
+.mhico{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mpc{margin:0 8px 5px;background:#fff;border-radius:10px;padding:10px;border:.5px solid #E8E8ED}
+.mpc.hl{border-color:#007AFF;border-width:1.5px}
+.mpc.dk{background:linear-gradient(135deg,#1C1C1E,#3A3A3C)}
+/* dots & controls */
+.dots-row{display:flex;gap:5px;margin-top:12px}
+.dot-i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);transition:all .4s;cursor:pointer}
+.dot-i.active{width:20px;border-radius:4px;background:#FF6B00}
+.dot-i.done{background:rgba(255,107,0,.35)}
+.controls{display:flex;align-items:center;gap:10px;margin-top:14px}
+.cb{background:rgba(255,255,255,.07);border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;color:rgba(255,255,255,.6);cursor:pointer;font-family:inherit;transition:all .15s}
+.cb:hover{background:rgba(255,255,255,.12);color:#fff}
+.cb.p{background:linear-gradient(135deg,#FF8C32,#FF6B00);color:#fff;padding:8px 18px}
+.timer-wrap{width:100%;max-width:252px;height:3px;background:rgba(255,255,255,.08);border-radius:4px;margin-top:9px;overflow:hidden}
+.timer-bar{height:100%;background:linear-gradient(90deg,#FF8C32,#FF6B00);border-radius:4px;width:0%;transition:width linear}
+.phone-screen.out{animation:so .3s ease forwards}
+.phone-screen.in{animation:si .35s ease forwards}
+@keyframes so{to{opacity:0;transform:translateX(-18px)}}
+@keyframes si{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="top-bar">
+    <div class="ghb-badge"><div class="dot"></div>GHB HaaS · Feature Showcase</div>
+    <div class="step-lbl" id="slbl">01 / 07</div>
+  </div>
+  <div class="caption">
+    <div class="cap-tag" id="ctag">Feature 01</div>
+    <div class="cap-title" id="ctitle">Home Health Score</div>
+    <div class="cap-sub" id="csub">ตรวจสุขภาพบ้านทั้งหมดในตัวเลขเดียว</div>
+  </div>
+  <div class="phone-wrap">
+    <div class="phone-frame">
+      <div class="phone-notch"></div>
+      <div class="phone-screen" id="screen"></div>
+      <div class="hand" id="hand">👆</div>
+      <div class="ring" id="ring"></div>
+      <div class="tip" id="tip"></div>
+    </div>
+    <div class="timer-wrap"><div class="timer-bar" id="tbar"></div></div>
+  </div>
+  <div class="dots-row" id="dots"></div>
+  <div class="controls">
+    <button class="cb" onclick="prev()">◀</button>
+    <button class="cb p" id="pbtn" onclick="togglePlay()">⏸ หยุด</button>
+    <button class="cb" onclick="next()">▶</button>
+  </div>
+</div>
+
+<script>
+const DUR = 4000;
+const NAV_HOME = `<div class="mbnav">
+  <div class="mni a"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2"/></svg><span class="mnl">Home</span></div>
+  <div class="mni"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066"/></svg><span class="mnl">Service</span></div>
+  <div class="mni"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13"/></svg><span class="mnl">Journal</span></div>
+  <div class="mni"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2"/></svg><span class="mnl">Loan</span></div>
+</div>`;
+const NAV_SVC = `<div class="mbnav">
+  <div class="mni"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7"/></svg><span class="mnl">Home</span></div>
+  <div class="mni a"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066"/></svg><span class="mnl">Service</span></div>
+  <div class="mni"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5"/></svg><span class="mnl">Journal</span></div>
+  <div class="mni"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2"/></svg><span class="mnl">Loan</span></div>
+</div>`;
+const NAV_JRN = `<div class="mbnav">
+  <div class="mni"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7"/></svg><span class="mnl">Home</span></div>
+  <div class="mni"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066"/></svg><span class="mnl">Service</span></div>
+  <div class="mni a"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13"/></svg><span class="mnl">Journal</span></div>
+  <div class="mni"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2"/></svg><span class="mnl">Loan</span></div>
+</div>`;
+const NAV_LOAN = `<div class="mbnav">
+  <div class="mni"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7"/></svg><span class="mnl">Home</span></div>
+  <div class="mni"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066"/></svg><span class="mnl">Service</span></div>
+  <div class="mni"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5"/></svg><span class="mnl">Journal</span></div>
+  <div class="mni a"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8"/></svg><span class="mnl">Loan</span></div>
+</div>`;
+const HDR = (bell=false)=>`<div class="mh">
+  <div style="display:flex;align-items:center;gap:6px">
+    <div class="mav">วว</div>
+    <div><div class="mun">คุณวรวุฒิ</div><div class="mtier">⭐ Platinum</div></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:5px">
+    <div class="mlogo">GHB <span>HaaS</span></div>
+    <div class="mbellw" id="hl-bell" style="${bell?'background:#FFF3E8;border:.5px solid rgba(255,107,0,.3)':''}">
+      <svg width="12" height="12" fill="none" stroke="${bell?'#FF6B00':'#1C1C1E'}" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      <div class="mbadge">3</div>
+    </div>
+  </div>
+</div>`;
+
+const slides = [
+/* 01 HOME HEALTH SCORE */
+{tag:'Feature 01',title:'Home Health Score',sub:'ตรวจสุขภาพบ้านทั้งหมดในตัวเลขเดียว รู้จุดเสี่ยงทันที',
+html:`${HDR()}
+<div class="mc">
+  <div class="mhero" id="hl-hero">
+    <div style="font-size:7px;opacity:.7;text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px">Home Health Score</div>
+    <div class="mscore">82<span style="font-size:13px;opacity:.4">/100</span></div>
+    <div style="font-size:7px;opacity:.75;margin-top:2px">บ้านของคุณต้องการดูแลบางส่วน</div>
+    <div class="mpills">
+      <div class="mpill w">⚠ ตู้ไฟ</div><div class="mpill w">⚠ ล้างแอร์</div>
+      <div class="mpill">✓ หลังคา</div><div class="mpill">✓ ถังบำบัด</div>
+    </div>
+  </div>
+  <div style="margin:4px 8px 5px;background:#fff;border-radius:9px;padding:7px;display:flex;align-items:center;gap:7px;border:.5px solid rgba(255,107,0,.3)">
+    <div style="width:28px;height:28px;background:#FFF3E8;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+      <svg width="13" height="13" fill="none" stroke="#FF6B00" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944"/></svg>
+    </div>
+    <div style="flex:1"><div style="font-size:8px;font-weight:700;color:#1C1C1E">แพ็คเกจดูแลบ้านรายปี</div><div style="font-size:6px;color:#8E8E93">เริ่มต้น ฿2,990/ปี · ล้างแอร์ ฉีดปลวก ฟรี</div></div>
+    <div style="background:#FF6B00;color:#fff;font-size:6px;font-weight:800;padding:2px 7px;border-radius:10px">ดูแพ็คเกจ</div>
+  </div>
+  <div style="padding:2px 8px 4px;display:flex;justify-content:space-between;align-items:center">
+    <span style="font-size:7px;font-weight:700;color:#8E8E93;text-transform:uppercase;letter-spacing:.8px">เช็คลิสต์สุขภาพบ้าน</span>
+    <span style="font-size:7px;color:#FF6B00;font-weight:700">ดูทั้งหมด</span>
+  </div>
+  <div class="mci"><div class="mcic" style="background:#FFF0EF"><svg width="12" height="12" fill="none" stroke="#FF3B30" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div><div style="flex:1"><div style="font-size:8px;font-weight:700;color:#1C1C1E">ตู้ไฟและระบบสายดิน</div><div style="font-size:7px;color:#8E8E93">ควรตรวจ: 10 พ.ค. 2567 · <span style="color:#FF3B30">เกินกำหนด 2 ปี</span></div></div><div class="mbd" style="background:#FFF0EF;color:#FF3B30">เกินกำหนด</div></div>
+  <div class="mci"><div class="mcic" style="background:#FFF3E8"><svg width="12" height="12" fill="none" stroke="#FF6B00" stroke-width="2" viewBox="0 0 24 24"><path d="M9.59 4.59A2 2 0 1111 8H2m10.59 11.41A2 2 0 1010 16H2"/></svg></div><div style="flex:1"><div style="font-size:8px;font-weight:700;color:#1C1C1E">ล้างแอร์ (ฆ่าเชื้อโรค)</div><div style="font-size:7px;color:#8E8E93">ควรตรวจ: 12 ก.พ. 2569</div></div><div class="mbd" style="background:#FFF3E8;color:#FF6B00">ถึงกำหนด</div></div>
+  <div class="mci"><div class="mcic" style="background:#FFF8EC"><svg width="12" height="12" fill="none" stroke="#FF9500" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div><div style="flex:1"><div style="font-size:8px;font-weight:700;color:#1C1C1E">ฉีดปลวกและแมลง</div><div style="font-size:7px;color:#8E8E93">ควรตรวจ: 15 มี.ค. 2569</div></div><div class="mbd" style="background:#FFF8EC;color:#FF9500">เร็วๆ นี้</div></div>
+  <div class="mci"><div class="mcic" style="background:#F0FBF3"><svg width="12" height="12" fill="none" stroke="#34C759" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3"/></svg></div><div style="flex:1"><div style="font-size:8px;font-weight:700;color:#1C1C1E">หลังคาและรางน้ำฝน</div><div style="font-size:7px;color:#8E8E93">ตรวจล่าสุด: 01 ม.ค. 2569</div></div><div class="mbd" style="background:#F0FBF3;color:#34C759">ปกติ</div></div>
+  <div class="mci"><div class="mcic" style="background:#F0FBF3"><svg width="12" height="12" fill="none" stroke="#34C759" stroke-width="2" viewBox="0 0 24 24"><path d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg></div><div style="flex:1"><div style="font-size:8px;font-weight:700;color:#1C1C1E">ระบบถังบำบัดน้ำเสีย</div><div style="font-size:7px;color:#8E8E93">ตรวจล่าสุด: 05 มิ.ย. 2568</div></div><div class="mbd" style="background:#F0FBF3;color:#34C759">ปกติ</div></div>
+</div>
+${NAV_HOME}`,
+hl:{id:'hl-hero',tip:'คะแนน 0–100 อัปเดตอัตโนมัติ'},hand:{x:'52%',y:'28%'}},
+
+/* 02 NOTIFICATION */
+{tag:'Feature 02',title:'การแจ้งเตือนอัจฉริยะ',sub:'ไม่พลาดกำหนดดูแลบ้านและผลิตภัณฑ์ธนาคาร ธอส.',
+html:`${HDR(true)}
+<div class="mc scroll">
+  <div style="padding:6px 8px 3px;display:flex;align-items:center;justify-content:space-between">
+    <div style="font-size:9px;font-weight:800;color:#1C1C1E">การแจ้งเตือน</div>
+    <div style="font-size:7px;color:#FF6B00;font-weight:700">อ่านทั้งหมด</div>
+  </div>
+  <div style="padding:1px 8px 4px;font-size:7px;font-weight:700;color:#8E8E93;text-transform:uppercase;letter-spacing:.8px">วันนี้</div>
+  <div class="mni-item" id="hl-notif"><div class="mnicon" style="background:#FFF0EF"><svg width="12" height="12" fill="none" stroke="#FF3B30" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7"/></svg></div><div><div style="font-size:8px;font-weight:700;color:#1C1C1E">⚠️ ตู้ไฟเกินกำหนดตรวจสอบ</div><div style="font-size:7px;color:#8E8E93;margin-top:1px;line-height:1.5">เกินกำหนด <strong style="color:#FF3B30">2 ปี</strong> กรุณานัดช่างโดยด่วน</div><div style="font-size:7px;color:#8E8E93;margin-top:2px">🕐 วันนี้ 08:30 น.</div></div></div>
+  <div class="mni-item"><div class="mnicon" style="background:#FFF3E8"><svg width="12" height="12" fill="none" stroke="#FF6B00" stroke-width="2" viewBox="0 0 24 24"><path d="M9.59 4.59A2 2 0 1111 8H2"/></svg></div><div><div style="font-size:8px;font-weight:700;color:#1C1C1E">🌬 ถึงเวลาล้างแอร์แล้ว!</div><div style="font-size:7px;color:#8E8E93;margin-top:1px;line-height:1.5">ครบกำหนด <strong style="color:#FF6B00">12 ก.พ. 2569</strong> ใช้สิทธิ์ Platinum 2 เครื่องฟรี</div><div style="font-size:7px;color:#8E8E93;margin-top:2px">🕐 วันนี้ 09:00 น.</div></div></div>
+  <div style="padding:4px 8px 4px;font-size:7px;font-weight:700;color:#8E8E93;text-transform:uppercase;letter-spacing:.8px">ผลิตภัณฑ์ธนาคาร</div>
+  <div class="mni-item"><div class="mnicon" style="background:#E8F2FF"><svg width="12" height="12" fill="none" stroke="#007AFF" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4"/><polyline points="22,6 12,13 2,6"/></svg></div><div><div style="font-size:8px;font-weight:700;color:#1C1C1E">🏦 สิทธิพิเศษ Retention 2569</div><div style="font-size:7px;color:#8E8E93;margin-top:1px;line-height:1.5">ปรับลดดอกเบี้ย <strong style="color:#007AFF">MRR-1.00%</strong> ยื่นได้ถึง 31 ธ.ค. 2569</div><div style="font-size:7px;color:#8E8E93;margin-top:2px">📅 เมื่อวาน 14:00 น.</div></div></div>
+  <div style="padding:4px 8px 4px;font-size:7px;font-weight:700;color:#8E8E93;text-transform:uppercase;letter-spacing:.8px">ก่อนหน้านี้</div>
+  <div class="mni-item" style="opacity:.6"><div class="mnicon" style="background:#FFF8EC"><svg width="12" height="12" fill="none" stroke="#FF9500" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01"/></svg></div><div><div style="font-size:8px;font-weight:700;color:#1C1C1E">ใกล้ถึงเวลาฉีดปลวกครั้งที่ 2</div><div style="font-size:7px;color:#8E8E93;margin-top:1px">ภายใน 15 มี.ค. 2569 · เหลืออีก 54 วัน</div><div style="font-size:7px;color:#8E8E93;margin-top:2px">📅 3 วันที่แล้ว</div></div></div>
+  <div class="mni-item" style="opacity:.45"><div class="mnicon" style="background:#F0FBF3"><svg width="12" height="12" fill="none" stroke="#34C759" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0"/></svg></div><div><div style="font-size:8px;font-weight:700;color:#1C1C1E">✅ ชำระค่างวดสำเร็จ</div><div style="font-size:7px;color:#8E8E93;margin-top:1px">ยอด ฿12,450 · 1 ม.ค. 2569</div></div></div>
+</div>
+${NAV_HOME}`,
+hl:{id:'hl-bell',tip:'3 รายการยังไม่ได้อ่าน!'},hand:{x:'81%',y:'10%'}},
+
+/* 03 JOURNAL */
+{tag:'Feature 03',title:'สมุดพกบ้าน',sub:'แผนผังบ้าน interactive คะแนนแต่ละส่วนและประวัติซ่อมบำรุง',
+html:`${HDR()}
+<div class="mc scroll">
+  <div style="padding:7px 8px 3px;display:flex;justify-content:space-between;align-items:center">
+    <div style="font-size:12px;font-weight:800;color:#1C1C1E">สมุดพกบ้าน</div>
+    <div style="text-align:right"><div style="font-size:6px;color:#8E8E93;font-weight:700">Overall</div><div style="font-size:18px;font-weight:900;color:#FF6B00;line-height:1">82%</div></div>
+  </div>
+  <div class="mjstats" id="hl-stats">
+    <div class="mjstat"><div style="font-size:13px;font-weight:900;color:#34C759">95%</div><div style="font-size:6px;color:#8E8E93;font-weight:700;margin-top:1px">โครงสร้าง</div></div>
+    <div class="mjstat"><div style="font-size:13px;font-weight:900;color:#FF3B30">60%</div><div style="font-size:6px;color:#8E8E93;font-weight:700;margin-top:1px">ระบบไฟ</div></div>
+    <div class="mjstat"><div style="font-size:13px;font-weight:900;color:#FF9500">80%</div><div style="font-size:6px;color:#8E8E93;font-weight:700;margin-top:1px">ประปา/ปลวก</div></div>
+  </div>
+  <div style="margin:0 8px 5px;background:#fff;border-radius:9px;padding:8px;border:.5px solid #E8E8ED">
+    <div style="font-size:6px;color:#8E8E93;text-align:center;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px">แตะส่วนต่างๆ ของบ้าน</div>
+    <svg viewBox="0 0 320 200" width="100%" style="height:auto;display:block">
+      <defs>
+        <linearGradient id="sG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E8F4FD"/><stop offset="100%" stop-color="#F5F5F7"/></linearGradient>
+        <linearGradient id="rG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2C2C2E"/><stop offset="100%" stop-color="#1C1C1E"/></linearGradient>
+        <linearGradient id="wG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FAFAFA"/><stop offset="100%" stop-color="#F0F0F0"/></linearGradient>
+        <linearGradient id="dG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FF8C32"/><stop offset="100%" stop-color="#FF6B00"/></linearGradient>
+      </defs>
+      <rect x="0" y="0" width="320" height="115" rx="6" fill="url(#sG)"/>
+      <circle cx="268" cy="26" r="14" fill="#FFF3CD" opacity=".8"/><circle cx="268" cy="26" r="9" fill="#FFD60A" opacity=".9"/>
+      <ellipse cx="50" cy="20" rx="18" ry="8" fill="white" opacity=".7"/><ellipse cx="68" cy="17" rx="13" ry="7" fill="white" opacity=".7"/>
+      <rect x="22" y="126" width="6" height="22" rx="2" fill="#8B6914"/><ellipse cx="25" cy="120" rx="13" ry="16" fill="#2E7D32" opacity=".85"/>
+      <rect x="282" y="128" width="6" height="20" rx="2" fill="#8B6914"/><ellipse cx="285" cy="123" rx="11" ry="14" fill="#388E3C" opacity=".85"/>
+      <path d="M160 30 L298 100 L22 100 Z" fill="url(#rG)"/>
+      <text x="160" y="76" text-anchor="middle" fill="white" font-size="9" font-weight="700" font-family="Kanit,sans-serif">หลังคา 95% ✓</text>
+      <rect x="36" y="100" width="248" height="92" rx="3" fill="url(#wG)"/>
+      <line x1="36" y1="118" x2="284" y2="118" stroke="#E0E0E0" stroke-width=".8"/><line x1="36" y1="136" x2="284" y2="136" stroke="#E0E0E0" stroke-width=".8"/><line x1="36" y1="154" x2="284" y2="154" stroke="#E0E0E0" stroke-width=".8"/><line x1="36" y1="172" x2="284" y2="172" stroke="#E0E0E0" stroke-width=".8"/>
+      <rect x="54" y="108" width="44" height="38" rx="4" fill="white" stroke="#E0E0E0" stroke-width="1.2"/>
+      <rect x="55.5" y="109.5" width="19" height="16" rx="2" fill="#D6EFFF" opacity=".6"/><rect x="77.5" y="109.5" width="19" height="16" rx="2" fill="#D6EFFF" opacity=".6"/>
+      <rect x="53" y="148" width="46" height="11" rx="5" fill="#FFF3E8"/><text x="76" y="156" text-anchor="middle" fill="#FF6B00" font-size="7" font-weight="700" font-family="Kanit,sans-serif">แอร์ ⚠</text>
+      <rect x="222" y="108" width="44" height="38" rx="4" fill="white" stroke="#E0E0E0" stroke-width="1.2"/>
+      <rect x="223.5" y="109.5" width="19" height="16" rx="2" fill="#D6EFFF" opacity=".6"/><rect x="245.5" y="109.5" width="19" height="16" rx="2" fill="#D6EFFF" opacity=".6"/>
+      <rect x="221" y="148" width="46" height="11" rx="5" fill="#FFF3E8"/><text x="244" y="156" text-anchor="middle" fill="#FF6B00" font-size="7" font-weight="700" font-family="Kanit,sans-serif">แอร์ ⚠</text>
+      <rect x="136" y="135" width="48" height="55" rx="3" fill="url(#dG)"/>
+      <rect x="141" y="141" width="14" height="17" rx="2" fill="rgba(255,255,255,.15)"/><rect x="159" y="141" width="14" height="17" rx="2" fill="rgba(255,255,255,.15)"/>
+      <rect x="141" y="162" width="14" height="17" rx="2" fill="rgba(255,255,255,.15)"/><rect x="159" y="162" width="14" height="17" rx="2" fill="rgba(255,255,255,.15)"/>
+      <circle cx="176" cy="163" r="2.5" fill="rgba(255,255,255,.6)"/>
+      <text x="160" y="196" text-anchor="middle" fill="#FF3B30" font-size="7" font-weight="700" font-family="Kanit,sans-serif">ตู้ไฟ ⚠ 60%</text>
+      <rect x="24" y="180" width="272" height="12" rx="3" fill="#9E9E9E"/>
+      <text x="160" y="189" text-anchor="middle" fill="white" font-size="7" font-weight="700" font-family="Kanit,sans-serif">ฐานราก · ปลวก 80%</text>
+      <rect x="36" y="160" width="24" height="22" rx="2" fill="#424242"/>
+      <rect x="38" y="162" width="20" height="18" rx="1.5" fill="#616161"/>
+      <rect x="40" y="164" width="4" height="5" rx="1" fill="#F44336"/><rect x="46" y="164" width="4" height="5" rx="1" fill="#F44336"/><rect x="52" y="164" width="4" height="5" rx="1" fill="#9E9E9E"/>
+    </svg>
+  </div>
+  <div style="padding:2px 8px 4px;font-size:7px;font-weight:700;color:#8E8E93;text-transform:uppercase;letter-spacing:.8px">ประวัติการบำรุงรักษา 2569</div>
+  <div class="mhist"><div class="mhico" style="background:#FFF3E8"><svg width="10" height="10" fill="none" stroke="#FF6B00" stroke-width="2" viewBox="0 0 24 24"><path d="M9.59 4.59A2 2 0 1111 8H2"/></svg></div><div style="flex:1"><div style="font-size:8px;font-weight:700;color:#1C1C1E">ล้างเครื่องปรับอากาศ</div><div style="font-size:7px;color:#8E8E93">12 ส.ค. 2568 · GHB Cool Air Partner</div></div><div style="font-size:6px;font-weight:700;background:#F0FBF3;color:#34C759;padding:1px 6px;border-radius:8px">Done</div></div>
+  <div class="mhist"><div class="mhico" style="background:#F0FBF3"><svg width="10" height="10" fill="none" stroke="#34C759" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7"/></svg></div><div style="flex:1"><div style="font-size:8px;font-weight:700;color:#1C1C1E">ตรวจสอบหลังคาและรางน้ำ</div><div style="font-size:7px;color:#8E8E93">01 ม.ค. 2569 · GHB Inspector</div></div><div style="font-size:6px;font-weight:700;background:#F0FBF3;color:#34C759;padding:1px 6px;border-radius:8px">Done</div></div>
+  <div class="mhist" style="margin-bottom:6px"><div class="mhico" style="background:#FFF8EC"><svg width="10" height="10" fill="none" stroke="#FF9500" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01"/></svg></div><div style="flex:1"><div style="font-size:8px;font-weight:700;color:#1C1C1E">ฉีดกันปลวก ครั้งที่ 1/2</div><div style="font-size:7px;color:#8E8E93">15 มี.ค. 2568 · GHB Pest Control</div></div><div style="font-size:6px;font-weight:700;background:#F0FBF3;color:#34C759;padding:1px 6px;border-radius:8px">Done</div></div>
+</div>
+${NAV_JRN}`,
+hl:{id:'hl-stats',tip:'คะแนนแยกทุกส่วน + แผนผัง SVG กดได้เลย'},hand:{x:'50%',y:'36%'}},
+
+/* 04 SERVICE */
+{tag:'Feature 04',title:'บริการช่าง GHB Partner',sub:'8 ประเภทงาน นัดง่าย ส่วนลด 20% · ติดตาม real-time',
+html:`${HDR()}
+<div class="mc">
+  <div style="padding:8px 8px 4px"><div style="font-size:12px;font-weight:800;color:#1C1C1E">บริการช่าง</div><div style="font-size:7px;color:#8E8E93">พาร์ทเนอร์ GHB · ทั่วกรุงเทพฯ</div></div>
+  <div style="margin:0 8px 5px;background:#FFF3E8;border-radius:7px;padding:5px 8px;font-size:7px;font-weight:700;color:#CC5500">⭐ Platinum: ส่วนลด 20% ทุกบริการ</div>
+  <div class="msg" id="hl-svc">
+    <div class="msc"><div class="msi" style="background:#FFF0EF"><svg width="11" height="11" fill="none" stroke="#FF3B30" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7"/></svg></div><div style="font-size:7px;font-weight:700;color:#1C1C1E">งานไฟฟ้า</div><div style="font-size:5px;color:#8E8E93">฿300–฿1,500</div><div style="font-size:5px;font-weight:700;background:#FFF0EF;color:#FF3B30;padding:1px 3px;border-radius:4px;margin-top:2px">ด่วน 2ชม.</div></div>
+    <div class="msc"><div class="msi" style="background:#E8F2FF"><svg width="11" height="11" fill="none" stroke="#007AFF" stroke-width="2" viewBox="0 0 24 24"><path d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg></div><div style="font-size:7px;font-weight:700;color:#1C1C1E">งานประปา</div><div style="font-size:5px;color:#8E8E93">฿250–฿2,000</div><div style="font-size:5px;font-weight:700;background:#E8F2FF;color:#007AFF;padding:1px 3px;border-radius:4px;margin-top:2px">ด่วน 2ชม.</div></div>
+    <div class="msc"><div class="msi" style="background:#FFF3E8"><svg width="11" height="11" fill="none" stroke="#FF6B00" stroke-width="2" viewBox="0 0 24 24"><path d="M9.59 4.59A2 2 0 1111 8H2"/></svg></div><div style="font-size:7px;font-weight:700;color:#1C1C1E">ล้างแอร์</div><div style="font-size:5px;color:#8E8E93">฿500–฿800</div><div style="font-size:5px;font-weight:700;background:#FFF3E8;color:#FF6B00;padding:1px 3px;border-radius:4px;margin-top:2px">นัดหมาย</div></div>
+    <div class="msc"><div class="msi" style="background:#FFF8EC"><svg width="11" height="11" fill="none" stroke="#FF9500" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01"/></svg></div><div style="font-size:7px;font-weight:700;color:#1C1C1E">กำจัดปลวก</div><div style="font-size:5px;color:#8E8E93">฿1,200–฿3,500</div><div style="font-size:5px;font-weight:700;background:#FFF8EC;color:#FF9500;padding:1px 3px;border-radius:4px;margin-top:2px">นัดหมาย</div></div>
+    <div class="msc"><div class="msi" style="background:#F0FBF3"><svg width="11" height="11" fill="none" stroke="#34C759" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7"/></svg></div><div style="font-size:7px;font-weight:700;color:#1C1C1E">หลังคา</div><div style="font-size:5px;color:#8E8E93">฿800–฿5,000</div><div style="font-size:5px;font-weight:700;background:#F0FBF3;color:#34C759;padding:1px 3px;border-radius:4px;margin-top:2px">นัดหมาย</div></div>
+    <div class="msc"><div class="msi" style="background:#F5F0FF"><svg width="11" height="11" fill="none" stroke="#8B5CF6" stroke-width="2" viewBox="0 0 24 24"><path d="M7 21a4 4 0 01-4-4V5"/></svg></div><div style="font-size:7px;font-weight:700;color:#1C1C1E">ทาสีบ้าน</div><div style="font-size:5px;color:#8E8E93">฿2,000+</div><div style="font-size:5px;font-weight:700;background:#F5F0FF;color:#8B5CF6;padding:1px 3px;border-radius:4px;margin-top:2px">รีโนเวท</div></div>
+    <div class="msc"><div class="msi" style="background:#E8F2FF"><svg width="11" height="11" fill="none" stroke="#007AFF" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7"/></svg></div><div style="font-size:7px;font-weight:700;color:#1C1C1E">ต่อเติม</div><div style="font-size:5px;color:#8E8E93">ประเมินหน้างาน</div><div style="font-size:5px;font-weight:700;background:#E8F2FF;color:#007AFF;padding:1px 3px;border-radius:4px;margin-top:2px">นัดสำรวจ</div></div>
+    <div class="msc"><div class="msi" style="background:#F5F5F7"><svg width="11" height="11" fill="none" stroke="#8E8E93" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v.01M12 12v.01M12 19v.01"/></svg></div><div style="font-size:7px;font-weight:700;color:#1C1C1E">อื่นๆ</div><div style="font-size:5px;color:#8E8E93">แจ้งรายละเอียด</div><div style="font-size:5px;font-weight:700;background:#F5F5F7;color:#8E8E93;padding:1px 3px;border-radius:4px;margin-top:2px">ทุกประเภท</div></div>
+  </div>
+  <div class="mtrack">
+    <div style="font-size:7px;font-weight:700;color:#FF6B00;margin-bottom:4px">📍 ติดตามช่าง real-time · #GHB2569-4821</div>
+    <div style="display:flex;align-items:center;gap:7px">
+      <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#667EEA,#764BA2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:800;flex-shrink:0">ส</div>
+      <div style="flex:1"><div style="font-size:8px;font-weight:700;color:#1C1C1E">สมชาย วงศ์สุวรรณ ★ 4.9 (128 รีวิว)</div><div style="font-size:7px;color:#FF6B00;font-weight:700">● กำลังเดินทาง · ETA 25 นาที</div></div>
+      <div style="font-size:5px;font-weight:700;background:#F0FBF3;color:#34C759;padding:2px 5px;border-radius:5px;flex-shrink:0">GHB Verified</div>
+    </div>
+  </div>
+  <div style="margin:4px 8px 6px;background:linear-gradient(135deg,#1C1C1E,#3A3A3C);border-radius:9px;padding:8px 10px;display:flex;align-items:center;gap:8px">
+    <div style="flex:1"><div style="color:rgba(255,255,255,.55);font-size:6px;font-weight:700;text-transform:uppercase;letter-spacing:.8px">ซ่อมใหญ่ ต้องการเงินทุน?</div><div style="color:#fff;font-size:8px;font-weight:800;margin-top:2px">สินเชื่อรีโนเวท สูงสุด ฿1.2M</div><div style="color:#FF9500;font-size:6px;font-weight:700;margin-top:1px">ดอกเบี้ยพิเศษ 2.5% สำหรับ Platinum</div></div>
+    <svg width="12" height="12" fill="none" stroke="#FF9500" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+  </div>
+</div>
+${NAV_SVC}`,
+hl:{id:'hl-svc',tip:'8 ประเภทงาน · นัดช่างง่ายใน 3 คลิก'},hand:{x:'25%',y:'46%'}},
+
+/* 05 SUBSCRIPTION */
+{tag:'Feature 05',title:'แพ็คเกจดูแลบ้าน',sub:'เลือก Subscription ที่เหมาะกับคุณ ตั้งแต่ฟรีถึง Premium',
+html:`${HDR()}
+<div class="mc scroll">
+  <div style="padding:8px 8px 5px"><div style="font-size:12px;font-weight:800;color:#1C1C1E">แพ็คเกจดูแลบ้าน</div><div style="font-size:7px;color:#8E8E93;margin-top:1px">เลือกแพ็คเกจที่เหมาะกับคุณ</div></div>
+  <div class="mpc" id="hl-plan">
+    <div style="font-size:6px;font-weight:700;background:#F5F5F7;color:#8E8E93;padding:2px 6px;border-radius:8px;display:inline-block;margin-bottom:5px">ไม่มีสมาชิก</div>
+    <div style="font-size:10px;font-weight:800;color:#1C1C1E">Free</div>
+    <div style="font-size:18px;font-weight:900;color:#1C1C1E;margin:3px 0">฿0<span style="font-size:9px;color:#8E8E93;font-weight:400">/ปี</span></div>
+    <div style="display:flex;flex-direction:column;gap:4px;font-size:8px;font-weight:600;color:#48484A">
+      <div>✓ หาช่างผ่านพาร์ทเนอร์ GHB (จ่ายเอง)</div>
+      <div>✓ ดู Home Health Score เบื้องต้น</div>
+      <div style="opacity:.4">✗ ไม่รวมบริการฟรี</div>
+    </div>
+  </div>
+  <div class="mpc hl">
+    <div style="font-size:6px;font-weight:700;background:#E8F2FF;color:#007AFF;padding:2px 6px;border-radius:8px;display:inline-block;margin-bottom:5px">แนะนำ</div>
+    <div style="font-size:10px;font-weight:800;color:#1C1C1E">Platinum</div>
+    <div style="font-size:18px;font-weight:900;color:#007AFF;margin:3px 0">฿2,990<span style="font-size:9px;color:#8E8E93;font-weight:400">/ปี</span></div>
+    <div style="display:flex;flex-direction:column;gap:4px;font-size:8px;font-weight:600;color:#1C1C1E">
+      <div>✓ ล้างแอร์ 2 เครื่อง/ปี (ฟรี)</div>
+      <div>✓ ฉีดปลวก 1 ครั้ง/ปี (ฟรี)</div>
+      <div>✓ ตรวจประเมินบ้าน 1 ครั้ง/ปี</div>
+      <div>✓ ส่วนลด 10% ค่าบริการช่าง</div>
+    </div>
+  </div>
+  <div style="padding:0 8px 5px"><div style="background:#007AFF;color:#fff;border-radius:9px;padding:8px;font-size:8px;font-weight:800;text-align:center">สมัครแพ็คเกจ Platinum · ฿2,990/ปี</div></div>
+  <div class="mpc dk">
+    <div style="font-size:6px;font-weight:700;background:rgba(255,149,0,.2);color:#FF9500;padding:2px 6px;border-radius:8px;display:inline-block;margin-bottom:5px">Exclusive</div>
+    <div style="font-size:10px;font-weight:800;color:#fff">Premium</div>
+    <div style="font-size:18px;font-weight:900;color:#FF9500;margin:3px 0">฿5,990<span style="font-size:9px;color:rgba(255,255,255,.5);font-weight:400">/ปี</span></div>
+    <div style="display:flex;flex-direction:column;gap:4px;font-size:8px;font-weight:600;color:rgba(255,255,255,.9)">
+      <div>✓ ล้างแอร์ 4 เครื่อง/ปี (ฟรี)</div>
+      <div>✓ ช่างด่วนภายใน 2 ชม. 24/7</div>
+      <div>✓ สินเชื่อดอกเบี้ยพิเศษ 2.5%</div>
+      <div>✓ ส่วนลด 20% ค่าบริการช่าง</div>
+    </div>
+  </div>
+  <div style="padding:5px 8px 8px"><div style="background:linear-gradient(135deg,#1C1C1E,#3A3A3C);color:#fff;border-radius:9px;padding:8px;font-size:8px;font-weight:800;text-align:center">อัปเกรด Premium · ฿5,990/ปี</div></div>
+</div>
+${NAV_HOME}`,
+hl:{id:'hl-plan',tip:'3 แพ็คเกจ ตั้งแต่ฟรีถึง Premium'},hand:{x:'50%',y:'42%'}},
+
+/* 06 LOAN */
+{tag:'Feature 06',title:'สินเชื่อซ่อมแซมบ้าน',sub:'คำนวณค่างวด interactive พร้อมผลิตภัณฑ์แนะนำจาก ธอส.',
+html:`${HDR()}
+<div class="mc scroll">
+  <div style="padding:8px 8px 4px"><div style="font-size:12px;font-weight:800;color:#1C1C1E">สินเชื่อซ่อมแซม</div><div style="font-size:7px;color:#8E8E93;margin-top:1px">อัตราดอกเบี้ยตามผลิตภัณฑ์ ธอส. ณ ปัจจุบัน</div></div>
+  <div class="mlcard" id="hl-loan">
+    <div style="font-size:7px;color:#8E8E93;font-weight:700;text-transform:uppercase;letter-spacing:.8px">วงเงินที่ต้องการ (บาท)</div>
+    <div style="font-size:22px;font-weight:900;color:#1C1C1E;margin:3px 0" id="ldisp">฿600,000</div>
+    <div style="font-size:7px;color:#34C759;font-weight:700">วงเงินอนุมัติสูงสุด: ฿1,200,000</div>
+    <div style="height:4px;background:#E8E8ED;border-radius:4px;overflow:hidden;margin:7px 0 4px"><div id="lprog" style="height:100%;width:45%;background:#FF6B00;border-radius:4px;transition:width .4s"></div></div>
+    <input type="range" min="100000" max="1200000" step="50000" value="600000" id="lrange" oninput="updL(this.value)" style="width:100%;accent-color:#FF6B00;height:2px;cursor:pointer">
+    <div style="display:flex;justify-content:space-between;font-size:6px;color:#8E8E93;font-weight:700;margin-top:2px"><span>฿100K</span><span>฿600K</span><span>฿1.2M</span></div>
+  </div>
+  <div class="mlcard">
+    <div style="font-size:7px;color:#8E8E93;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px">ระยะเวลากู้และดอกเบี้ย</div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="display:flex;align-items:center;gap:6px;padding:6px 8px;background:#FFF3E8;border-radius:7px;border:.5px solid #FF6B00"><div style="width:11px;height:11px;border-radius:50%;border:2px solid #FF6B00;display:flex;align-items:center;justify-content:center;flex-shrink:0"><div style="width:5px;height:5px;border-radius:50%;background:#FF6B00"></div></div><div><div style="font-size:8px;font-weight:700;color:#1C1C1E">3 ปี · 2.50% ต่อปี</div><div style="font-size:6px;color:#8E8E93">สำหรับ Platinum Member</div></div></div>
+      <div style="display:flex;align-items:center;gap:6px;padding:6px 8px;background:#F5F5F7;border-radius:7px;border:.5px solid #E8E8ED"><div style="width:11px;height:11px;border-radius:50%;border:2px solid #8E8E93;flex-shrink:0"></div><div><div style="font-size:8px;font-weight:700;color:#1C1C1E">5 ปี · 3.00% ต่อปี</div><div style="font-size:6px;color:#8E8E93">อัตราพิเศษ ธอส. ปี 2569</div></div></div>
+      <div style="display:flex;align-items:center;gap:6px;padding:6px 8px;background:#F5F5F7;border-radius:7px;border:.5px solid #E8E8ED"><div style="width:11px;height:11px;border-radius:50%;border:2px solid #8E8E93;flex-shrink:0"></div><div><div style="font-size:8px;font-weight:700;color:#1C1C1E">10 ปี · 3.50% ต่อปี</div><div style="font-size:6px;color:#8E8E93">อัตราทั่วไป ธอส.</div></div></div>
+    </div>
+  </div>
+  <div class="mlcard hi" style="text-align:center;padding:10px">
+    <div style="font-size:7px;color:#8E8E93;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px">ค่างวดโดยประมาณ / เดือน</div>
+    <div style="font-size:24px;font-weight:900;color:#FF6B00" id="lmonth">฿17,340</div>
+    <div style="font-size:7px;color:#8E8E93;margin-top:2px">คำนวณตามวงเงินและอัตราดอกเบี้ยที่เลือก</div>
+  </div>
+  <div style="margin:0 8px 5px;background:linear-gradient(135deg,#E8F5FF,#F0F8FF);border-radius:9px;padding:8px;border:.5px solid rgba(0,122,255,.2)">
+    <div style="font-size:7px;font-weight:700;color:#007AFF;margin-bottom:2px">🏦 Retention 2569 · MRR-1.00%</div>
+    <div style="font-size:8px;font-weight:800;color:#1C1C1E">ปรับลดดอกเบี้ยสำหรับลูกค้าเดิม ธอส.</div>
+  </div>
+  <div style="margin:0 8px 5px;background:linear-gradient(135deg,#F5F0FF,#FAF0FF);border-radius:9px;padding:8px;border:.5px solid rgba(139,92,246,.2)">
+    <div style="font-size:7px;font-weight:700;color:#8B5CF6;margin-bottom:2px">🏗 Developer Plus 2569 · MLR-0.75%</div>
+    <div style="font-size:8px;font-weight:800;color:#1C1C1E">สำหรับนิติบุคคลผู้ประกอบการ · สูงสุด 500 ล้าน</div>
+  </div>
+  <div style="margin:0 8px 5px;background:linear-gradient(135deg,#FFF3E8,#FFF8F0);border-radius:9px;padding:8px;border:.5px solid rgba(255,107,0,.2)">
+    <div style="font-size:7px;font-weight:700;color:#FF6B00;margin-bottom:2px">🔧 สินเชื่อซ่อม-แต่ง · 2.50%</div>
+    <div style="font-size:8px;font-weight:800;color:#1C1C1E">วงเงินสูงสุด ฿1,200,000 · ระยะเวลา 10 ปี</div>
+  </div>
+  <div style="padding:0 8px 8px"><div style="background:#FF6B00;color:#fff;border-radius:9px;padding:8px;font-size:8px;font-weight:800;text-align:center">ยื่นขอสินเชื่อซ่อมแซม</div></div>
+</div>
+${NAV_LOAN}`,
+hl:{id:'hl-loan',tip:'ลาก slider ค่างวดเปลี่ยนทันที!'},hand:{x:'50%',y:'38%'},
+onShow:()=>{
+  const r=document.getElementById('lrange'); if(!r)return;
+  let v=600000,d=1;
+  r._iv=setInterval(()=>{v+=d*100000;if(v>=1100000)d=-1;if(v<=200000)d=1;r.value=v;updL(v);},320);
+},
+onHide:()=>{const r=document.getElementById('lrange');if(r&&r._iv)clearInterval(r._iv);}},
+
+/* 07 KNOWLEDGE */
+{tag:'Feature 07',title:'คลังความรู้บ้าน',sub:'บทความจาก ธอส. โดยตรง กดเปิดเว็บ ธอส. ได้ทันที',
+html:`${HDR()}
+<div class="mc">
+  <div class="mhero" style="padding:10px 12px">
+    <div style="font-size:7px;opacity:.7;text-transform:uppercase;letter-spacing:.8px">Home Health Score</div>
+    <div class="mscore">82<span style="font-size:12px;opacity:.4">/100</span></div>
+    <div style="font-size:7px;opacity:.7;margin-top:1px">บ้านของคุณต้องการดูแลบางส่วน</div>
+  </div>
+  <div style="margin:4px 8px 5px;background:#fff;border-radius:9px;padding:7px;display:flex;align-items:center;gap:7px;border:.5px solid rgba(255,107,0,.3)">
+    <div style="width:28px;height:28px;background:#FFF3E8;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="13" height="13" fill="none" stroke="#FF6B00" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944"/></svg></div>
+    <div style="flex:1"><div style="font-size:8px;font-weight:700;color:#1C1C1E">แพ็คเกจดูแลบ้านรายปี</div><div style="font-size:6px;color:#8E8E93">เริ่มต้น ฿2,990/ปี · ล้างแอร์ ฉีดปลวก ฟรี</div></div>
+    <div style="background:#FF6B00;color:#fff;font-size:6px;font-weight:800;padding:2px 6px;border-radius:10px">ดูแพ็คเกจ</div>
+  </div>
+  <div id="hl-kb">
+    <div style="padding:3px 8px 5px;display:flex;justify-content:space-between;align-items:center">
+      <div style="font-size:7px;font-weight:700;color:#8E8E93;text-transform:uppercase;letter-spacing:.8px">📚 คลังความรู้บ้าน</div>
+      <div style="font-size:8px;color:#FF6B00;font-weight:700">ดูทั้งหมด</div>
+    </div>
+    <div class="mkbrow">
+      <div class="mkbc"><div class="mkbimg" style="background:linear-gradient(135deg,#1A3A5C,#2D6A9F)"><div style="font-size:20px">🌧️</div></div><div class="mkbbody"><div style="font-size:6px;font-weight:700;background:#E8F5FF;color:#1A6FAD;padding:1px 4px;border-radius:6px;display:inline-block;margin-bottom:2px">หน้าฝน</div><div style="font-size:7px;font-weight:700;color:#1C1C1E;line-height:1.3">หน้าฝนต้องดูแลบ้านอย่างไร?</div><div style="font-size:6px;color:#8E8E93;margin-top:2px">ธนาคาร ธอส. · บทความ</div></div></div>
+      <div class="mkbc"><div class="mkbimg" style="background:linear-gradient(135deg,#3D1A00,#7A3B10)"><div style="font-size:20px">🐜</div></div><div class="mkbbody"><div style="font-size:6px;font-weight:700;background:#FFF3E0;color:#E65100;padding:1px 4px;border-radius:6px;display:inline-block;margin-bottom:2px">กำจัดปลวก</div><div style="font-size:7px;font-weight:700;color:#1C1C1E;line-height:1.3">สัญญาณปลวกบุกบ้าน</div><div style="font-size:6px;color:#8E8E93;margin-top:2px">ธนาคาร ธอส. · บทความ</div></div></div>
+      <div class="mkbc"><div class="mkbimg" style="background:linear-gradient(135deg,#1A1A2E,#16213E)"><div style="font-size:20px">⚡</div></div><div class="mkbbody"><div style="font-size:6px;font-weight:700;background:#FFF8E1;color:#F57F17;padding:1px 4px;border-radius:6px;display:inline-block;margin-bottom:2px">ความปลอดภัย</div><div style="font-size:7px;font-weight:700;color:#1C1C1E;line-height:1.3">ตรวจระบบไฟฟ้าบ้าน</div><div style="font-size:6px;color:#8E8E93;margin-top:2px">ธนาคาร ธอส. · บทความ</div></div></div>
+      <div class="mkbc"><div class="mkbimg" style="background:linear-gradient(135deg,#003D5C,#006494)"><div style="font-size:20px">❄️</div></div><div class="mkbbody"><div style="font-size:6px;font-weight:700;background:#E3F2FD;color:#0277BD;padding:1px 4px;border-radius:6px;display:inline-block;margin-bottom:2px">ดูแลแอร์</div><div style="font-size:7px;font-weight:700;color:#1C1C1E;line-height:1.3">ล้างแอร์เองได้ไหม?</div><div style="font-size:6px;color:#8E8E93;margin-top:2px">ธนาคาร ธอส. · บทความ</div></div></div>
+      <div class="mkbc"><div class="mkbimg" style="background:linear-gradient(135deg,#2D4A1E,#4A7C2F)"><div style="font-size:20px">🏠</div></div><div class="mkbbody"><div style="font-size:6px;font-weight:700;background:#F1F8E9;color:#558B2F;padding:1px 4px;border-radius:6px;display:inline-block;margin-bottom:2px">รีโนเวท</div><div style="font-size:7px;font-weight:700;color:#1C1C1E;line-height:1.3">วางแผนรีโนเวทให้คุ้มค่า</div><div style="font-size:6px;color:#8E8E93;margin-top:2px">ธนาคาร ธอส. · บทความ</div></div></div>
+    </div>
+  </div>
+</div>
+${NAV_HOME}`,
+hl:{id:'hl-kb',tip:'5 บทความ เลื่อนดูได้ → กดเปิดเว็บ ธอส.'},hand:{x:'50%',y:'70%'}}
+];
+
+let cur=0,playing=true,timer=null,prevHide=null;
+
+// init dots
+const dotsEl=document.getElementById('dots');
+slides.forEach((_,i)=>{
+  const d=document.createElement('div');
+  d.className='dot-i';d.id='di'+i;
+  d.onclick=()=>{stopT();goTo(i);if(playing)startT();};
+  dotsEl.appendChild(d);
+});
+
+function updDots(){
+  slides.forEach((_,i)=>{
+    const d=document.getElementById('di'+i);
+    d.className='dot-i'+(i===cur?' active':i<cur?' done':'');
+  });
+}
+
+function updL(v){
+  v=parseInt(v);
+  const pct=Math.round(((v-100000)/1100000)*100);
+  const r=2.5/100/12,n=36;
+  const m=Math.round(v*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1));
+  const ld=document.getElementById('ldisp'),lm=document.getElementById('lmonth'),lp=document.getElementById('lprog');
+  if(ld)ld.textContent='฿'+v.toLocaleString();
+  if(lm)lm.textContent='฿'+m.toLocaleString();
+  if(lp)lp.style.width=pct+'%';
+}
+
+function render(idx){
+  const s=slides[idx];
+  if(prevHide){prevHide();prevHide=null;}
+  const sc=document.getElementById('screen');
+  sc.classList.add('out');
+  setTimeout(()=>{
+    sc.classList.remove('out');
+    sc.innerHTML=s.html;
+    sc.classList.add('in');
+    setTimeout(()=>sc.classList.remove('in'),400);
+    if(s.onShow)s.onShow();
+    if(s.onHide)prevHide=s.onHide;
+    // highlight
+    setTimeout(()=>{
+      const target=s.hl?.id?document.getElementById(s.hl.id):null;
+      const ring=document.getElementById('ring');
+      const tip=document.getElementById('tip');
+      const hand=document.getElementById('hand');
+      if(target&&ring){
+        const pf=document.querySelector('.phone-frame');
+        const pr=pf.getBoundingClientRect();
+        const tr=target.getBoundingClientRect();
+        ring.style.cssText=`position:absolute;left:${tr.left-pr.left-3}px;top:${tr.top-pr.top-3}px;width:${tr.width+6}px;height:${tr.height+6}px;border-radius:13px;opacity:1;`;
+        if(s.hl.tip){
+          const tx=tr.left-pr.left+tr.width/2;
+          const ty=tr.top-pr.top-38;
+          tip.textContent=s.hl.tip;
+          tip.style.cssText=`left:${Math.min(Math.max(tx-78,3),pr.width-158)}px;top:${ty<28?tr.top-pr.top+tr.height+5:ty}px;opacity:0;`;
+          tip.className='tip';
+          setTimeout(()=>tip.classList.add('show'),220);
+        }
+      } else {
+        if(ring)ring.style.opacity='0';
+        if(tip)tip.classList.remove('show');
+      }
+      if(hand&&s.hand){
+        hand.style.display='block';
+        hand.style.left=s.hand.x;
+        hand.style.top=s.hand.y;
+        [600,1400].forEach(t=>setTimeout(()=>{hand.classList.add('tap');setTimeout(()=>hand.classList.remove('tap'),130);},t));
+      }
+    },360);
+  },280);
+  // caption
+  const ct=document.getElementById('ctag'),ci=document.getElementById('ctitle'),cs=document.getElementById('csub');
+  [ct,ci,cs].forEach(el=>{el.style.animation='none';void el.offsetWidth;el.style.animation='';});
+  ct.textContent=s.tag;ci.textContent=s.title;cs.textContent=s.sub;
+  document.getElementById('slbl').textContent=String(idx+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+  updDots();
+}
+
+function startTBar(){
+  const b=document.getElementById('tbar');
+  b.style.transition='none';b.style.width='0%';
+  void b.offsetWidth;
+  b.style.transition=`width ${DUR}ms linear`;b.style.width='100%';
+}
+function stopT(){if(timer)clearInterval(timer);}
+function startT(){stopT();startTBar();timer=setInterval(()=>{cur=(cur+1)%slides.length;render(cur);startTBar();},DUR);}
+function goTo(idx){cur=idx;render(cur);startTBar();}
+function next(){stopT();cur=(cur+1)%slides.length;render(cur);if(playing)startT();}
+function prev(){stopT();cur=(cur-1+slides.length)%slides.length;render(cur);if(playing)startT();}
+function togglePlay(){
+  playing=!playing;
+  const b=document.getElementById('pbtn');
+  if(playing){b.textContent='⏸ หยุด';startT();}
+  else{stopT();b.textContent='▶ เล่น';document.getElementById('tbar').style.transition='none';}
+}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')next();if(e.key==='ArrowLeft')prev();if(e.key===' '){e.preventDefault();togglePlay();}});
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){if(dx<0)next();else prev();}},{passive:true});
+render(0);startT();
+</script>
+</body>
+</html>
